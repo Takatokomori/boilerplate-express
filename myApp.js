@@ -8,11 +8,11 @@ app.get("/", function(req, res) {
 });
 
 app.use(function getIp(req, res, next) {
-    console.log(req.method + " " + req.path + " - " + req.ip);
-    next();
-  });
+  console.log(req.method + " " + req.path + " - " + req.ip);
+  next();
+});
 
-  app.get("/json", function(req, res) {
+app.get("/json", function(req, res) {
     if(response == "uppercase"){
       response = response.toUpperCase();
       res.json({"message" : "Hello json".toUpperCase()});
@@ -20,6 +20,17 @@ app.use(function getIp(req, res, next) {
       response = response.toLowerCase();
       res.json({"message" : "Hello json"});
     }
+});
+
+app.get("/now", function(req, res, next) {
+  req.time = new Date().toString();
+  next();
+}, function(req, res) {
+  res.send({time: req.time});
+});
+
+app.get("/:word/echo", (req, res) =>{
+  res.json({echo: req.params.word});
 });
 
 app.use("/public", express.static(__dirname + "/public"));
