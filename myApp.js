@@ -50,6 +50,12 @@ app.get("/name", function(req, res) {
     });
 });
 
+app.post("/name", function (req, res) {
+    const firstname = req.body.first;
+    const lastname = req.body.last;
+    res.json({name : `${firstname} ${lastname}`});
+});
+
 app.use("/public", express.static(__dirname + "/public"));
 
 
