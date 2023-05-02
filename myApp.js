@@ -1,15 +1,20 @@
 require('dotenv').config();
+let bodyParser = require("body-parser");
 let express = require('express');
 let app = express();
 let response = process.env.MESSAGE_STYLE;
 
-app.get("/", function(req, res) {
-  res.sendFile(__dirname + "/views/index.html");
-});
+// body parser
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json());
 
 app.use(function getIp(req, res, next) {
   console.log(req.method + " " + req.path + " - " + req.ip);
   next();
+});
+
+app.get("/", function(req, res) {
+    res.sendFile(__dirname + "/views/index.html");
 });
 
 app.get("/json", function(req, res) {
@@ -35,8 +40,8 @@ app.get("/:word/echo", (req, res) =>{
 });
 
 app.get("/name", function(req, res) {
-    var firstName = req.query.first;
-    var lastName = req.query.last;
+    var firstName = req.body.first;
+    var lastName = req.body.last;
     // OR you can destructure and rename the keys
     var { first: firstName, last: lastName } = req.query;
     // Use template literals to form a formatted string
