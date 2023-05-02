@@ -7,7 +7,12 @@ app.get("/", function(req, res) {
   res.sendFile(__dirname + "/views/index.html");
 });
 
-app.get("/json", function(req, res) {
+app.use(function getIp(req, res, next) {
+    console.log(req.method + " " + req.path + " - " + req.ip);
+    next();
+  });
+
+  app.get("/json", function(req, res) {
     if(response == "uppercase"){
       response = response.toUpperCase();
       res.json({"message" : "Hello json".toUpperCase()});
